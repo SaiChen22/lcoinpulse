@@ -8,7 +8,7 @@ import DataTable from '@/components/DataTable'
 
 const TrendingCoins = async () => {
     const trendingCoins = await fetcher<{ coins: TrendingCoin[] }>('/search/trending', undefined, 300);
-    const colums: DataTableColumn<TrendingCoin>[] = [
+    const columns: DataTableColumn<TrendingCoin>[] = [
         {
             header: 'Name',
             cellClassName: 'name-cell',
@@ -24,14 +24,20 @@ const TrendingCoins = async () => {
         },
         {
             header: '24h Change',
-            cellClassName: 'name-cell',
+            cellClassName: 'change-cell',
             cell: (coin) => {
-                const item = coin.item;
-                const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;
+                const item = coin?.item;
+                const pct = item?.data?.price_change_percentage_24h?.usd;
+                
+                if (pct === null || pct === undefined) {
+                    return <div className="price-change">—</div>;
+                }
+                
+                const isTrendingUp = pct > 0;
                 return (
                     <div className={cn('price-change', isTrendingUp ? 'text-green-500' : 'text-red-500')}>
                         <p>
-                            {item.data.price_change_percentage_24h.usd.toFixed(2)}%
+                            {pct.toFixed(2)}%
                             {isTrendingUp ? (
                                 <TrendingUp width={16} height={16} />
                             ) :
@@ -45,7 +51,13 @@ const TrendingCoins = async () => {
         {
             header: 'Price',
             cellClassName: 'price-cell',
-            cell: (coin) => formatCurrency(coin.item.data.price)
+            cell: (coin) => {
+                const price = coin?.item?.data?.price;
+                if (price === null || price === undefined || isNaN(price)) {
+                    return '-';
+                }
+                return formatCurrency(price);
+            }
         },
 
     ]
@@ -54,7 +66,7 @@ const TrendingCoins = async () => {
         <div id='trending-coins'>
             <p>Trending Coins</p>
             <DataTable
-                columns={colums}
+                columns={columns}
                 data={trendingCoins.coins.slice(0, 6)|| []}
                 rowKey={(coin) => coin.item.id}
                 tableClassName='trending-coins-table'

@@ -19,15 +19,16 @@ export async function fetcher<T>(
 ): Promise<T> {
 
 
+    const normalizedEndpoint = endpoint.replace(/^\//, '');
     const url = qs.stringifyUrl({
-        url: `${BASE_URL}/${endpoint}`,
+        url: `${BASE_URL}/${normalizedEndpoint}`,
         query: params,
     }, { skipEmptyString: true, skipNull: true });
 
     const response = await fetch(url, {
 
         headers: {
-            'x_cg_demo_api_key': API_KEY,
+            'x-cg-demo-api-key': API_KEY,
             'Content-Type': 'application/json',
         } as Record<string, string>,
         next: { revalidate },
