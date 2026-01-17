@@ -79,7 +79,12 @@ export function convertOHLCData(data: OHLCData[]) {
     })
     .map((d) => {
       const [timestamp, open, high, low, close] = d;
-      const time = Math.floor(Number(timestamp));
+      // Normalize timestamp: convert from milliseconds to seconds if needed
+      let time = Math.floor(Number(timestamp));
+      if (time > 1e10) {
+        // Likely milliseconds (timestamp > year 2286 in milliseconds), convert to seconds
+        time = Math.floor(time / 1000);
+      }
       
       if (isNaN(time) || isNaN(Number(open)) || isNaN(Number(high)) || isNaN(Number(low)) || isNaN(Number(close))) {
         console.warn('Invalid OHLC values:', d);
