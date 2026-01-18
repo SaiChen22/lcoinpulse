@@ -1,6 +1,6 @@
 'use client'
 import {
-    Pagination,
+    Pagination as UIPagination,
     PaginationContent,
     PaginationEllipsis,
     PaginationItem,
@@ -9,6 +9,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { buildPageNumbers, cn, ELLIPSIS } from "@/lib/utils";
+import type { Pagination } from "@/type.d";
 import { useRouter } from 'next/navigation';
 
 const CoinPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) => {
@@ -20,14 +21,13 @@ const CoinPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) =
     }
 
     const pageNumbers = buildPageNumbers(currentPage, totalPages);
-    const isLastPage = !hasMorePages || currentPage === totalPages;;
-
+	const isLastPage = !hasMorePages || currentPage === totalPages;
     return (
-        <Pagination id="coins-pagination" >
-            <PaginationContent className=".pagination-content">
+        <UIPagination id="coins-pagination" >
+            <PaginationContent className="pagination-content">
                 <PaginationItem className="pagination-control prev">
                     <PaginationPrevious className={currentPage === 1 ? 'control-disabled' : 'control-button'} href="#"
-                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)} />
+                        onClick={(e) => { e.preventDefault(); currentPage > 1 && handlePageChange(currentPage - 1); }} />
                 </PaginationItem>
 
                 <div className="pagination-pages">
@@ -35,7 +35,7 @@ const CoinPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) =
                          <PaginationItem key={index}>
                         { page === ELLIPSIS ? <span className="ellipsis">...</span> :
                            
-                                <PaginationLink onClick={()=>handlePageChange(page)} 
+                <PaginationLink href="#" onClick={(e) => { e.preventDefault(); handlePageChange(page); }} 
                                 className={cn('page-link',{
                                     'page-link-active':currentPage === page
                                 })}>{page}</PaginationLink>
@@ -47,10 +47,10 @@ const CoinPagination = ({ currentPage, totalPages, hasMorePages }: Pagination) =
 
                 <PaginationItem className="pagination-control next">
                     <PaginationNext className={isLastPage ? 'control-disabled' : 'control-button'} href="#"
-                        onClick={() => !isLastPage && handlePageChange(currentPage + 1)} />
+                        onClick={(e) => { e.preventDefault(); !isLastPage && handlePageChange(currentPage + 1); }} />
                 </PaginationItem>
             </PaginationContent>
-        </Pagination>
+        </UIPagination>
     )
 }
 

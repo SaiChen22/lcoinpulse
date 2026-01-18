@@ -9,7 +9,7 @@ import { TrendingDown, TrendingUp } from 'lucide-react';
 const Categories = async () => {
     const categories = await fetcher<Category[]>('/coins/categories');
 
-    const colums: DataTableColumn<Category>[] = [
+    const columns: DataTableColumn<Category>[] = [
         { header: 'Category', cellClassName: 'category-cell', cell: (category) => category.name },
         {
             header: 'Top Gainers', cellClassName: 'top-gainers-cell', cell: (category) =>
@@ -22,7 +22,7 @@ const Categories = async () => {
                 const isTrendingUp = item > 0;
 
                 return (
-                    <div className={cn('change-cell000', isTrendingUp ? 'text-green-500' : 'text-red-500')}>
+                    <div className={cn('change-cell', isTrendingUp ? 'text-green-500' : 'text-red-500')}>
                         <p className="flex items-center">
                             
                             {isTrendingUp ? (
@@ -44,7 +44,7 @@ const Categories = async () => {
 
     return (
         <div id="categories" className="custom-scrollbar">
-            <DataTable columns={colums} data={categories?.slice(0, 10)}
+            <DataTable columns={columns} data={categories?.slice(0, 10)}
                 rowKey={(_, index) => index} tableClassName='mt-3' />
         </div>
     )

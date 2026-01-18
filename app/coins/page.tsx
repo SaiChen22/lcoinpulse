@@ -30,10 +30,9 @@ const page = async ({ searchParams }: NextPageProps) => {
 			header: 'Rank',
 			cellClassName: 'rank-cell',
 			cell: (coin) => (
-				<>
+				<Link href={`/coins/${coin.id}`} className="m-5" aria-label={`View ${coin.name} details`}>
 					#{coin.market_cap_rank}
-					<Link href={`/coins/${coin.id}`} aria-label="View coin" />
-				</>
+				</Link>
 			)
 		},
 		{
@@ -57,17 +56,24 @@ const page = async ({ searchParams }: NextPageProps) => {
 			header: "24h Change",
 			cellClassName: "change-cell",
 			cell: (coin) => {
-				const isTrendingUp = coin.price_change_percentage_24h > 0;
+				const hasChange = typeof coin.price_change_percentage_24h === "number" && isFinite(coin.price_change_percentage_24h);
+				const isTrendingUp = hasChange && coin.price_change_percentage_24h > 0;
 
 				return (
 					<span
 						className={cn("change-value", {
-							"text-green-600": isTrendingUp,
-							"text-red-500": !isTrendingUp,
+							"text-green-600": hasChange && isTrendingUp,
+							"text-red-500": hasChange && !isTrendingUp,
 						})}
 					>
-						{isTrendingUp && "+"}
-						{formatPercentage(coin.price_change_percentage_24h)}
+						{hasChange ? (
+							<>
+								{isTrendingUp && "+"}
+								{formatPercentage(coin.price_change_percentage_24h)}
+							</>
+						) : (
+							"—"
+						)}
 					</span>
 				);
 			},
