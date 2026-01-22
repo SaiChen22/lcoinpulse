@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useRef, useState, useEffect } from 'react';
 
 // Cache with TTL to avoid repeated requests

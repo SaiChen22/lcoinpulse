@@ -58,13 +58,17 @@ export async function getPools(
 
   if (network && contractAddress) {
     try {
+      // Validate and encode network and contractAddress
+      const encodedNetwork = encodeURIComponent(network);
+      const encodedAddress = encodeURIComponent(contractAddress);
+      
       const poolData = await fetcher<{ data: PoolData[] }>(
-        `/onchain/networks/${network}/tokens/${contractAddress}/pools`,
+        `/onchain/networks/${encodedNetwork}/tokens/${encodedAddress}/pools`,
       );
 
       return poolData.data?.[0] ?? fallback;
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching pools for network and contract address:', error);
       return fallback;
     }
   }
@@ -73,7 +77,8 @@ export async function getPools(
     const poolData = await fetcher<{ data: PoolData[] }>('/onchain/search/pools', { query: id });
 
     return poolData.data?.[0] ?? fallback;
-  } catch {
+  } catch (error) {
+    console.error('Error fetching pools by search query:', error);
     return fallback;
   }
 }

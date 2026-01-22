@@ -18,7 +18,7 @@ const LiveDataWrapper = ({ coinId, coinOHLCData, poolId, coin, children }: LiveD
                 </CandlestickChart>
             </div>
             <Separator className='divider' />
-
+            {children}
         </section>
     )
 }

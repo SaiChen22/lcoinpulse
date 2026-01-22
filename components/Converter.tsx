@@ -31,7 +31,7 @@ const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
                     <Input type="number" value={amount} placeholder='Amount'
                         onChange={(e) => setAmount(e.target.value)} className="input" />
                     <div className="coin-info">
-                        <Image src={icon} alt={symbol} width={20} height={20} />
+                        {icon && <Image src={icon} alt={symbol} width={20} height={20} />}
                         <p>{symbol.toUpperCase()}</p>
                     </div>
 

@@ -26,7 +26,7 @@ const page = async ({ params }: NextPageProps) => {
     const platform = coinData.asset_platform_id ?
         coinData.detail_platforms?.[coinData.asset_platform_id] : null;
 
-    const network = platform?.geckoterminal_url.split('/')[3] || null;
+    const network = platform?.geckoterminal_url?.split('/')[3] || null;
     const contractAddress = platform?.contract_address || null;
     const pool = await getPools(id, network, contractAddress);
 
@@ -62,7 +62,7 @@ const page = async ({ params }: NextPageProps) => {
                             <li key={index}>
                                 <p className={label}>{label}</p>
                                 {link ? (<div className="link">
-                                    <Link href={link} target="_blank">{linkText || label}</Link>
+                                    <Link href={link} target="_blank" rel="noopener noreferrer">{linkText || label}</Link>
                                     <ArrowUp size={16} />
                                 </div>) : (
                                     <p className='text-base font-medium'>
