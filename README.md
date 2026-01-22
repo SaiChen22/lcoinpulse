@@ -211,51 +211,7 @@ const { price, trades, ohlcv, isConnected } = useCoinGeckoWebSocket({
 | `NEXT_PUBLIC_COINGECKO_WEBSOCKET_URL` | WebSocket URL (public) | No |
 | `NEXT_PUBLIC_COINGECKO_API_KEY` | Public API key | No |
 
-## 🤝 Contributing
 
-1. Create a feature branch: `git checkout -b feature/amazing-feature`
-2. Commit your changes: `git commit -m 'Add amazing feature'`
-3. Push to the branch: `git push origin feature/amazing-feature`
-4. Open a Pull Request
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 🐛 Troubleshooting
-
-### API Rate Limiting (429 Errors)
-
-The application implements intelligent rate-limit handling:
-
-- **Automatic Caching**: 5-minute cache TTL for all API responses
-- **Smart Backoff**: Automatic 60-second wait on rate limits
-- **Graceful Degradation**: Falls back to cached data when rate-limited
-
-If you continue to experience rate limits:
-
-1. Upgrade your CoinGecko API plan
-2. Reduce polling frequency by modifying the `liveInterval` prop
-3. Check your API key in `.env.local`
-
-### Build Errors
-
-If you encounter build errors:
-
-```bash
-# Clear cache and reinstall dependencies
-rm -rf node_modules .next
-npm install
-npm run build
-```
-
-### Port Already in Use
-
-If port 3000 is already in use:
-
-```bash
-npm run dev -- -p 3001
-```
 
 ## 📚 Learn More
 
@@ -272,6 +228,4 @@ npm run dev -- -p 3001
 - [Radix UI](https://www.radix-ui.com) for accessible component primitives
 - [Tailwind Labs](https://tailwindlabs.com) for Tailwind CSS
 
----
 
-Made with ❤️ by the CoinPulse team
