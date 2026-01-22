@@ -43,3 +43,43 @@ export async function fetcher<T>(
     return response.json();
 }
 
+
+export async function getPools(
+  id: string,
+  network?: string | null,
+  contractAddress?: string | null,
+): Promise<PoolData> {
+  const fallback: PoolData = {
+    id: '',
+    address: '',
+    name: '',
+    network: '',
+  };
+
+  if (network && contractAddress) {
+    try {
+      // Validate and encode network and contractAddress
+      const encodedNetwork = encodeURIComponent(network);
+      const encodedAddress = encodeURIComponent(contractAddress);
+      
+      const poolData = await fetcher<{ data: PoolData[] }>(
+        `/onchain/networks/${encodedNetwork}/tokens/${encodedAddress}/pools`,
+      );
+
+      return poolData.data?.[0] ?? fallback;
+    } catch (error) {
+      console.error('Error fetching pools for network and contract address:', error);
+      return fallback;
+    }
+  }
+
+  try {
+    const poolData = await fetcher<{ data: PoolData[] }>('/onchain/search/pools', { query: id });
+
+    return poolData.data?.[0] ?? fallback;
+  } catch (error) {
+    console.error('Error fetching pools by search query:', error);
+    return fallback;
+  }
+}
+
